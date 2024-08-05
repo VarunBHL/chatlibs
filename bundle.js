@@ -7,11 +7,11 @@
             <p>Version 0.1 Prototype</p>
         </div>
         <div id="body"> 
-            <i><img id="chat-circle" class="chatbot-logo" src="./images/chat-bot.png" alt=""></i>
+            <i><img id="chat-circle" class="chatbot-logo" src="/images/chat-bot.png" alt=""></i>
             <div class="chat-box">
                 <div class="chat-box-header">
                     BHL - SmartAssist
-                    <span class="chat-box-toggle"><img src="./images/close.png"  class="close-button"></span>
+                    <span class="chat-box-toggle"><img src="/images/close.png"  class="close-button"></span>
                 </div>
                 <div class="chat-box-body">
                     <div class="chat-box-overlay"></div>
@@ -20,7 +20,7 @@
                 <div class="chat-input">      
                     <form>
                         <input type="text" id="chat-input" placeholder="Send a message..."/>
-                        <button type="submit" class="chat-submit" id="chat-submit"><img class="send-logo" src="./images/send.png" alt=""></button>
+                        <button type="submit" class="chat-submit" id="chat-submit"><img class="send-logo" src="/images/send.png" alt=""></button>
                     </form>      
                 </div>
             </div>
