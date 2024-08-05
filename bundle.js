@@ -7,7 +7,7 @@
             <p>Version 0.1 Prototype</p>
         </div>
         <div id="body"> 
-            <i><img id="chat-circle" class="chatbot-logo" src="/images/chat-bot.png" alt=""></i>
+            <i><img id="chat-circle" class="chatbot-logo" src="https://chatlibs.onrender.com/images/chat-bot.png" alt=""></i>
             <div class="chat-box">
                 <div class="chat-box-header">
                     BHL - SmartAssist
