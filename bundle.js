@@ -11,7 +11,7 @@
             <div class="chat-box">
                 <div class="chat-box-header">
                     BHL - SmartAssist
-                    <span class="chat-box-toggle"><img src="/images/close.png"  class="close-button"></span>
+                    <span class="chat-box-toggle"><img src="https://chatlibs.onrender.com/images/close.png"  class="close-button"></span>
                 </div>
                 <div class="chat-box-body">
                     <div class="chat-box-overlay"></div>
@@ -20,7 +20,7 @@
                 <div class="chat-input">      
                     <form>
                         <input type="text" id="chat-input" placeholder="Send a message..."/>
-                        <button type="submit" class="chat-submit" id="chat-submit"><img class="send-logo" src="/images/send.png" alt=""></button>
+                        <button type="submit" class="chat-submit" id="chat-submit"><img class="send-logo" src="https://chatlibs.onrender.com/images/send.png" alt=""></button>
                     </form>      
                 </div>
             </div>
