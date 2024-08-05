@@ -1,4 +1,6 @@
 (function() {
+    console.log("TEST");
+    
     var chatHTML = `
         <div id="center-text">
             <h2>BHL - Smart Assist</h2>
