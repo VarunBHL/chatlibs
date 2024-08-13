@@ -4,7 +4,7 @@
     var chatHTML = `
         <div id="center-text">
             <h2>BHL - Smart Assist</h2>
-            <p>Version 0.1 Prototype</p>
+            <p class="vtest">Version 0.1 Prototype</p>
         </div>
         <div id="body"> 
             <i><img id="chat-circle" class="chatbot-logo" src="https://chatlibs.onrender.com/images/chat-bot.png" alt=""></i>
@@ -29,9 +29,14 @@
     
     var chatCSS = `
         html, body {
-            background: red;      
+            background: #efefef;      
             height:100%;  
         }
+
+        .vtest {
+            color: red;
+        }
+        
         #center-text {          
             display: flex;
             flex: 1;
