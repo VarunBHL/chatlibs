@@ -32,11 +32,14 @@
             background: #efefef;      
             height:100%;  
         }
-
-        .vtest {
-            color: red;
+        .chatbot-logo {
+              position: fixed;
+              bottom: 50px;
+              right: 50px; 
+              padding: 28px;
+              cursor: pointer;
+              width: 4%;
         }
-        
         #center-text {          
             display: flex;
             flex: 1;
