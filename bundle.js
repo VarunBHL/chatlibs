@@ -217,6 +217,189 @@
         }
     `;
 
+    var chatJS = `
+            var INDEX = 0;
+
+                  $("#chat-submit").click(function(e) {
+                      e.preventDefault();
+                      var msg = $("#chat-input").val();
+                      if(msg.trim() == '') {
+                          return false;
+                      }
+                      if(msg.trim().toLowerCase() === 'history') {
+                          fetch_history();
+                      } else {
+                          generate_message(msg, 'self');
+                      }
+                  });
+                
+                  function fetch_history() {
+                      $.ajax({
+                          url: "http://127.0.0.1:5000/history",
+                          type: "GET",
+                          success: function(response) {
+                              display_history(response);
+                          },
+                          error: function(error) {
+                              console.log("Error:", error);
+                          }
+                      });
+                  }
+                
+                  function display_history(history) {
+                      $(".chat-logs").html(""); // Clear existing messages
+                      console.log(history)
+                      // history.forEach(entry => {
+                      //     generate_message(entry.user, 'self', false);
+                      //     generate_message(entry.bot, 'user', false);
+                      // });
+                  }
+                
+                  function generate_intro(msg, type, animate =true) {
+                    INDEX++;
+                
+                    var str="";
+                    var linkPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+                    var formattedMsg = msg[0].replace(linkPattern, function(url) {
+                        return "<a href='" + url + "' target='_blank' class='chat-link'>Download PDF</a>";
+                    });
+                    str += "<div id='cm-msg-" + INDEX + "' class='chat-msg " + type + "'>";
+                    str += "          <span class='msg-avatar'>";
+                    str += "            <img src='" + (type === 'self' ? '../app/images/user.png' : '../app/images/customer-service.png') + "'>";
+                    str += "          </span>";
+                    str += "          <div class='cm-msg-text'>";
+                    str += formattedMsg;
+                    str += "          </div>";
+                    str += "          <div class='cm-msg-text'>";
+                    str += msg[1];
+                    str += "          </div>";
+                    str += "          <div class='intent-body'>";
+                    str += "           <div id='predefined-intents'>"
+                    str += "                 <button class='intent-btn' data-intent='Hotel Factsheets'>Hotel Factsheets</button> &nbsp;"
+                    str += "                 <button class='intent-btn' data-intent='Wedding Factsheets'>Wedding Factsheets</button> &nbsp;"
+                    str += "                 <button class='intent-btn' data-intent='Golf Factsheet'>Golf Factsheet</button> &nbsp;"
+                    str += "                 <button class='intent-btn' data-intent='Booking Information'>Booking Information</button> &nbsp;"
+                    str += "                 <button class='intent-btn' data-intent='Other Service'>Other Service</button> &nbsp;"
+                    str += "          </div>";
+                    str += "        </div>";
+                    $(".chat-logs").append(str);
+                    if(animate) {
+                        $("#cm-msg-" + INDEX).hide().fadeIn(300);
+                    }
+                    if(type === 'self') {
+                        $("#chat-input").val('');
+                    }
+                    $(".chat-logs").stop().animate({ scrollTop: 0 }, 1000);
+                
+                    // Get intent onclick
+                    $('.intent-btn').off('click').on('click', function() {
+                        var intent = $(this).data('intent');
+                        handleIntentClick(intent);
+                    });
+                  }
+                
+                  function handleIntentClick(intent) {
+                    if (intent === 'Hotel Factsheets') {
+                        processQuery(intent);
+                    } else {
+                        processQuery(intent);
+                    }
+                }
+                
+                  function processQuery(message) {
+                    $.ajax({
+                        url: "http://127.0.0.1:5000/ask",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ msg: message }),
+                        success: function(response) {
+                            bot_writing("user");
+                            setTimeout(function() {
+                                // Remove typing indicator
+                                $("#cm-msg-typing").remove();
+                
+                                generate_message(response.response, 'user');
+                            }, 5000);
+                            
+                        },
+                        error: function(error) {
+                            generate_message("Sorry, I am not available today. If you have any query, please get in touch with us on <a href='tel:+23052593132'>+23052593132</a> or send us your queries on <a href='mailto:resa@beachcomber-holidays.com'>resa@beachcomber-holidays.com</a>", 'user');
+                            console.log("Error:", error);
+                        }
+                    });
+                  }  
+                
+                  function generate_message(msg, type, animate = true) {
+                      INDEX++;
+                      var username = null;
+                      var nameAsked = false;
+                
+                      var str="";
+                      var linkPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+                      var formattedMsg = msg.replace(linkPattern, function(url) {
+                          return "<a href='" + url + "' target='_blank' class='chat-link'>Download PDF</a>";
+                      });
+                      str += "<div id='cm-msg-" + INDEX + "' class='chat-msg " + type + "'>";
+                      str += "          <span class='msg-avatar'>";
+                      str += "            <img src='" + (type === 'self' ? '../app/images/user.png' : '../app/images/customer-service.png') + "'>";
+                      str += "          </span>";
+                      str += "          <div class='cm-msg-text'>";
+                      str += formattedMsg;
+                      str += "          </div>";
+                      str += "        </div>";
+                
+                      $(".chat-logs").append(str);
+                      if(animate) {
+                          $("#cm-msg-" + INDEX).hide().fadeIn(300);
+                      }
+                
+                      if(type === 'self') {
+                          $("#chat-input").val('');
+                      }
+                
+                      $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
+                      if(type === 'self') {
+                        processQuery(msg);
+                      }
+                  }
+                
+                  function bot_writing(type, animate=true) {
+                    INDEX++;
+                
+                    var str = "";
+                    // Add typing indicator
+                    str += "<div id='cm-msg-typing' class='chat-msg " + type + "'>";
+                    str += "          <span class='msg-avatar'>";
+                    str += "            <img src='../app/images/customer-service.png'>";
+                    str += "          </span>";
+                    str += "          <div class='cm-msg-text'>";
+                    str += "            <span class='typing'>Agent is typing...</span>";
+                    str += "          </div>";
+                    str += "</div>";
+                
+                    $(".chat-logs").append(str);
+                    if (animate) {
+                        $("#cm-msg-typing").hide().fadeIn(300);
+                    }
+                    $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
+                  }
+                
+                  $('.close-button').click(function() {
+                    $(".chat-logs").empty();
+                  });
+                
+                  $("#chat-circle").click(function() {
+                      $("#chat-circle").toggle('scale');
+                      $(".chat-box").toggle('scale');
+                      generate_intro(["Welcome to Beachcomber Holidays. I'm your Virtual Assistance.", "How can I help you?"], 'user', false);
+                  });
+                
+                  $(".chat-box-toggle").click(function() {
+                      $("#chat-circle").toggle('scale');
+                      $(".chat-box").toggle('scale');
+                  });
+    `;
+
     var style = document.createElement('style');
     style.type = 'text/css';
     if (style.styleSheet) {
@@ -225,7 +408,11 @@
         style.appendChild(document.createTextNode(chatCSS));
     }
     document.head.appendChild(style);
-
+    
+    var scriptElement = document.createElement("script");
+    scriptElement.innerHTML = chatJS;
+    document.body.appendChild(scriptElement);
+    
     var body = document.querySelector('body');
     var chatDiv = document.createElement('div');
     chatDiv.innerHTML = chatHTML;
