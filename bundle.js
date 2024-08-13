@@ -168,6 +168,13 @@
             animation: fadeIn 1s ease-in-out;
             -webkit-animation: fadeIn 1s ease-in-out;
         }
+        .send-logo {
+            width: 95%;
+        }
+        .close-button {
+            width: 47%;
+            margin-top: -3px;
+        }
         .chat-bubble:before {
             content: '';
             position: absolute;  
