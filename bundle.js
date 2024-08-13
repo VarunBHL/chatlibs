@@ -29,7 +29,7 @@
     
     var chatCSS = `
         html, body {
-            background: #efefef;      
+            background: red;      
             height:100%;  
         }
         #center-text {          
