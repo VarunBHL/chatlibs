@@ -409,12 +409,24 @@
     }
     document.head.appendChild(style);
     
-    var scriptElement = document.createElement("script");
-    scriptElement.innerHTML = chatJS;
-    document.body.appendChild(scriptElement);
-    
     var body = document.querySelector('body');
     var chatDiv = document.createElement('div');
     chatDiv.innerHTML = chatHTML;
     body.appendChild(chatDiv);
+
+    // Add JavaScript for interactive elements
+    document.getElementById('chat-submit').addEventListener('click', function(event) {
+        event.preventDefault();
+        var input = document.getElementById('chat-input');
+        console.log('User message:', input.value);
+        input.value = '';
+    });
+
+    document.querySelector('.chat-box-toggle').addEventListener('click', function() {
+        document.querySelector('.chat-box').style.display = 'none';
+    });
+
+    document.querySelector('#chat-circle').addEventListener('click', function() {
+        document.querySelector('.chat-box').style.display = 'block';
+    });
 })();
